@@ -1,0 +1,3 @@
+﻿Test loader.obj : error LNK2019: unresolved external symbol _length referenced in function main
+Memory_manager.obj : error LNK2019: unresolved external symbol valueof referenced in function length
+F:\os lab\mem menager\Memory-manager-master\Memory manager\x64\Debug\Memory manager.exe : fatal error LNK1120: 2 unresolved externals

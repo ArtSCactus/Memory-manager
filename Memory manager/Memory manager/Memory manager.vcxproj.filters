@@ -16,11 +16,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mmemory.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Memory manager.c">
+    <ClCompile Include="Test loader.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory_manager.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
