@@ -101,7 +101,7 @@ class MemoryManager {
 
 int main()
 {
-    std::cout << "Oh shit. Here we go again...\n";
+
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
