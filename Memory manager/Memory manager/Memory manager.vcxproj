@@ -23,7 +23,7 @@
     <ProjectGuid>{F3866792-1CFF-42A8-A348-98986697A652}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Memorymanager</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -91,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,10 +153,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="List.c" />
     <ClCompile Include="Test loader.c" />
     <ClCompile Include="Memory_manager.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="List.h" />
     <ClInclude Include="mmemory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

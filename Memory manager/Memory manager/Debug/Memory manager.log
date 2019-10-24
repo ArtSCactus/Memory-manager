@@ -1,0 +1,7 @@
+﻿  Memory_manager.c
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(21,22): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(114,30): warning C4013: malloc: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(73): warning C4716: _read: должна возвращать значение
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(93): warning C4716: _write: должна возвращать значение
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(127): warning C4716: memory_status: должна возвращать значение
+  Memory manager.vcxproj -> D:\Projects\Memory-manager\Memory manager\Debug\Memory manager.exe

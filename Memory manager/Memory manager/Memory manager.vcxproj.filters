@@ -18,12 +18,21 @@
     <ClInclude Include="mmemory.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Header.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test loader.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Memory_manager.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="List.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

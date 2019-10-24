@@ -1,28 +1,7 @@
-#include <stddef.h>
 #include <stdbool.h>
-#include <malloc.h>
-#include "mmemory.h"
-#include "Memory_manager.h"
-
-typedef char* VA;
-
-typedef struct block {
-	size_t size;
-	VA address;
-	bool free;
-}Block;
-
-typedef struct RAM {
-	int total_memory;
-	int free_memory;
-	Block Blocks[];
-}RAM;
+#include "Header.h"
 
 RAM ram;
-
-int length(int Array[]) {
-	return sizeof(Array)/sizeof(Array[0]);
-}
 
 /**
 @func	_malloc
@@ -40,11 +19,9 @@ int length(int Array[]) {
 _malloc(VA* ptr, size_t szBlock)
 {
 	if (ram.free_memory < szBlock) return -2;
-	if (szBlock <= 0 || length(ptr) == 0) return -1;
+	if (szBlock <= 0 ) return -1;
 	Block new_block;
-	new_block.address = ptr;
-	new_block.size = szBlock;
-	new_block.free = false;
+	new_block.free = 0;
 	ram.free_memory -= szBlock;
 	return 0;
 };
@@ -64,11 +41,11 @@ _malloc(VA* ptr, size_t szBlock)
 **/
 _free(VA ptr) 
 {
-	for (int index = 0; index < length(ram.Blocks); index++) {
+	for (int index = 0; index < ram.total_memory; index++) {
 		Block temp = ram.Blocks[index];
-		if (temp.address == ptr) {
-			ram.Blocks[index].free = true;
-			ram.free_memory += ram.Blocks[index].size;
+		if (temp.value == ptr) {
+			ram.Blocks[index].free = 1;
+			ram.free_memory += 1;
 			return 0;
 		}
 	}
@@ -134,13 +111,20 @@ _write(VA ptr, void* pBuffer, size_t szBuffer) {
 _init(int n, int szPage) {
 	if (n <= 0 || szPage <= 0) return -1;
 	ram.total_memory = n*szPage;
-	Block *a; //указатель на массив
-	Block i, n;
-	a = (Block*)malloc(n * sizeof(Block));
-
+	ram.Blocks = (Block*) malloc(n * szPage);
+	Block defaultBlock = {0,0,0};
+	for (int index = 0; index < ram.total_memory; index++) {
+		ram.Blocks[index] = defaultBlock;
+	}
+	memory_status();
 	return 0;
 };
 
+int memory_status() {
+	for (int index = 0; index < ram.total_memory; index++) {
+		printf("Block[%i] seg_id:%i status:%i\n",index,ram.Blocks[index].segment_id, ram.Blocks[index].free);
+	}
+}
 
 //Буфер - это сами данные!!! 
 //Каждый возов malloc - это новый сегмент. Каждый вызов free - это удаление сегмента. 
