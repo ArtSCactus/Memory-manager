@@ -1,7 +1,15 @@
 ﻿  Memory_manager.c
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(21,22): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(114,30): warning C4013: malloc: нет определения; предполагается "extern" с возвратом типа "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(73): warning C4716: _read: должна возвращать значение
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(93): warning C4716: _write: должна возвращать значение
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(127): warning C4716: memory_status: должна возвращать значение
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(42,22): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(45,12): warning C4013: addSegment: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(136,30): warning C4013: calloc: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(141,14): warning C4047: функция: "VA *" отличается по уровням косвенного обращения от "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(141,14): warning C4024: _malloc: различные типы для формального и фактического параметров 1
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(142,16): warning C4013: memory_status: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(143,16): warning C4013: deleteSegment: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(208,6): warning C4013: free: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(231,10): warning C4477: "printf": в строке форматирования "%i" требуется аргумент типа "int", но вариативный аргумент "4" имеет тип "VA"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(169): warning C4716: addSegment: должна возвращать значение
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(204): warning C4716: deleteSegment: должна возвращать значение
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(226): warning C4715: getSegment: значение возвращается не при всех путях выполнения
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(234): warning C4716: memory_status: должна возвращать значение
   Memory manager.vcxproj -> D:\Projects\Memory-manager\Memory manager\Debug\Memory manager.exe

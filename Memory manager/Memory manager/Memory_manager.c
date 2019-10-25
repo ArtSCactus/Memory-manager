@@ -1,6 +1,27 @@
-#include <stdbool.h>
-#include "Header.h"
+//#include "Header.h"
+#include <stdio.h>
+typedef char* VA;
 
+typedef struct block {
+	VA value;
+	int free;
+	int segment_id;
+}Block;
+
+typedef struct Segment {
+	int id_begining;
+	int id_end;
+	int segment_id;
+}Segment;
+
+typedef struct RAM {
+	int total_memory;
+	int free_memory;
+	Block* Blocks;
+	Segment* segments;
+	int segment_amount;
+	//List Segment_list;
+}RAM;
 RAM ram;
 
 /**
@@ -20,9 +41,8 @@ _malloc(VA* ptr, size_t szBlock)
 {
 	if (ram.free_memory < szBlock) return -2;
 	if (szBlock <= 0 ) return -1;
-	Block new_block;
-	new_block.free = 0;
 	ram.free_memory -= szBlock;
+	addSegment(0, szBlock, 1);
 	return 0;
 };
 
@@ -111,19 +131,106 @@ _write(VA ptr, void* pBuffer, size_t szBuffer) {
 _init(int n, int szPage) {
 	if (n <= 0 || szPage <= 0) return -1;
 	ram.total_memory = n*szPage;
-	ram.Blocks = (Block*) malloc(n * szPage);
-	Block defaultBlock = {0,0,0};
+	ram.segment_amount = 0;
+	ram.free_memory = ram.total_memory;
+	ram.Blocks = (Block*) calloc(ram.total_memory);
+	//ram.Segment_list = create();
 	for (int index = 0; index < ram.total_memory; index++) {
-		ram.Blocks[index] = defaultBlock;
+		ram.Blocks[index] =(Block) { 0,0,-1 };
 	}
-	memory_status();
+		_malloc('a',5);
+		memory_status();
+		deleteSegment(1);
+		memory_status();
 	return 0;
 };
 
-int memory_status() {
-	for (int index = 0; index < ram.total_memory; index++) {
-		printf("Block[%i] seg_id:%i status:%i\n",index,ram.Blocks[index].segment_id, ram.Blocks[index].free);
+int addSegment(int seg_start, int seg_end, int seg_id)
+{
+	// новый сегмент
+	Segment newSegment = { seg_start, seg_end, seg_id };
+	Segment* newSegmentList;
+	//резервируем память под увеличенный список сегментов
+	newSegmentList = (Segment*) calloc(ram.segment_amount);
+	//переносим сегменты из старого списка в новый
+	for (int index = 0; index < ram.segment_amount; index++) {
+		newSegmentList[index]=ram.segments[index];
 	}
+	// добавляем новый
+	newSegmentList[ram.segment_amount - 1] = newSegment;
+	for (int index = seg_start; index <seg_end; index++) {
+		ram.Blocks[index].segment_id = newSegment.segment_id;
+	}
+	//обновляем список
+	//free(ram.segments);
+	ram.segments = newSegmentList;
+	ram.segment_amount++;
+
+}
+
+int deleteSegment(int segment_id)
+{
+	Segment currentSegment = ram.segments[0];
+	for (int index = 0; index < ram.segment_amount; index++) {
+		if (ram.segments[index].segment_id == segment_id) {
+			currentSegment=ram.segments[index];
+		}
+	}
+
+	for (int index = 0; index < 5; index++) {
+	ram.Blocks[index].segment_id = -1;
+	}
+	int memoryCounter = currentSegment.id_end - currentSegment.id_begining;
+	//формируем новый список сегментов
+	Segment* newList;
+	if (ram.segment_amount == 1) {
+		 newList = ram.segments;
+	}
+	else {
+		 newList = (Segment*)calloc(ram.segment_amount);
+	}
+	//в него войдут все сегменты, кроме того, что имеет нужный id
+	for (int index = 0; index < ram.segment_amount; index++) {
+		if (ram.segments[index].segment_id != segment_id) {
+			newList[index] = ram.segments[index];
+		}
+	}
+	//уменьшаем количество сегментов
+	ram.segment_amount--;
+	ram.free_memory += memoryCounter;
+	//освобождает память от старого списка
+	//free(ram.segments);
+	ram.segments = newList;
+}
+
+void deleteList()
+{
+	free(ram.segments);
+}
+
+void printList()
+{
+	//List segment_list = list;
+	for (int index = 0; index < ram.segment_amount; index++)
+		printf("Segment[%i]:  begins from block: %i  ends on block: %i\n",
+			ram.segments[index].segment_id, ram.segments[index].id_begining, ram.segments[index].id_end); // вывод значения элемента p
+}
+
+Segment getSegment(int segment_id)
+{
+	for (int index = 0; index < ram.segment_amount; index++) {
+		if (ram.segments[index].segment_id == segment_id) {
+			return ram.segments[index];
+		}
+	}
+}
+
+int memory_status() {
+	printf("Total memory{%i}, Free memory{%i}\n", ram.total_memory, ram.free_memory);
+	for (int index = 0; index < ram.total_memory; index++) {
+		printf("Block[%i] seg_id:%i status:%i value:%i\n",index,ram.Blocks[index].segment_id, ram.Blocks[index].free, ram.Blocks[index].value);
+	}
+	printf("\n");
 }
 
 //Буфер - это сами данные!!! 

@@ -1,5 +1,7 @@
-#pragma once
+/*#pragma once
 #include "mmemory.h"
+#include "List.h"
+/*
 typedef char* VA;
 
 typedef struct block {
@@ -9,9 +11,19 @@ typedef struct block {
 }Block;
 
 typedef struct RAM {
+	Block* Blocks;
+	Segment* segments;
 	int total_memory;
 	int free_memory;
-	Block* Blocks;
+	int segment_amount;
+	//List Segment_list;
 }RAM;
 
+typedef struct Segment {
+	int id_begining;
+	int id_end;
+	int segment_id;
+}Segment;
+
 int memory_status();
+*/

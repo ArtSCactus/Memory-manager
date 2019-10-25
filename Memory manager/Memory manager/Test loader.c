@@ -4,6 +4,6 @@
 int main()
 { 
 
-	_init(2,2);
+	_init(5,5);
 
 }

@@ -1,6 +1,18 @@
-#pragma once
+//#pragma once
+//#include "Header.h"
+/*
+typedef struct List
+{
+	Segment* segments;
+	int size;
+}List;
+*/
+//List* create();
 
-typedef struct Node {
-	int value;
-	struct Node* next;
-} Node;
+//List* add(List* list, int seg_start, int seg_end, int seg_id);
+
+//List* deleteSegment(List* list, int segment_id);
+
+//void deleteList(List* list);
+
+//void printList(List* lst);
