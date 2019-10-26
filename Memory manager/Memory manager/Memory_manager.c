@@ -1,6 +1,10 @@
-//#include "Header.h"
 #include <stdio.h>
 typedef char* VA;
+
+typedef struct SegmentLine { // необходим дл€ обозначени€ начала и конца строки при возврате из метода findSpace()
+	int id_begining;
+	int id_end;
+}SegmentLine;
 
 typedef struct block {
 	VA value;
@@ -20,8 +24,8 @@ typedef struct RAM {
 	Block* Blocks;
 	Segment* segments;
 	int segment_amount;
-	//List Segment_list;
 }RAM;
+
 RAM ram;
 
 /**
@@ -42,7 +46,31 @@ _malloc(VA* ptr, size_t szBlock)
 	if (ram.free_memory < szBlock) return -2;
 	if (szBlock <= 0 ) return -1;
 	ram.free_memory -= szBlock;
-	addSegment(0, szBlock, 1);
+	SegmentLine spaceForSegment;
+	int isBlockLineFree = 1;
+	for (int startIndex = 0; startIndex + (int) szBlock < ram.total_memory; startIndex++) {
+		spaceForSegment.id_begining = startIndex;
+		spaceForSegment.id_end = startIndex + szBlock;
+		isBlockLineFree = 1;
+		for (int currentBlockIndex = startIndex; currentBlockIndex < spaceForSegment.id_end; currentBlockIndex++) {
+			if (ram.Blocks[currentBlockIndex].free == 1 || ram.Blocks[currentBlockIndex].segment_id != -1) {
+				isBlockLineFree = 0;
+				break;
+			}
+		}
+		if (isBlockLineFree == 1) {
+			break;
+		}
+		if (spaceForSegment.id_begining == ram.total_memory - 1 & spaceForSegment.id_end == ram.total_memory - 1) {
+			return -2;
+		}
+	}
+	
+
+	if (spaceForSegment.id_begining == -1 & spaceForSegment.id_end == -1) {
+		return -2;
+	}
+	addSegment(spaceForSegment.id_begining, spaceForSegment.id_end, findSegmentID());
 	return 0;
 };
 
@@ -61,16 +89,26 @@ _malloc(VA* ptr, size_t szBlock)
 **/
 _free(VA ptr) 
 {
-	for (int index = 0; index < ram.total_memory; index++) {
-		Block temp = ram.Blocks[index];
-		if (temp.value == ptr) {
-			ram.Blocks[index].free = 1;
-			ram.free_memory += 1;
-			return 0;
-		}
-	}
-	return -1;
+	deleteSegment(ptr);
+	return 0;
 };
+
+/**
+@func	_free
+@brief	”даление блока пам€ти
+
+@param	[in] ptr		адресс блока
+
+@return	код ошибки
+@retval	0	успешное выполнение
+@retval	-1	неверные параметры
+@retval	1	неизвестна€ ошибка
+**/
+/*_free(VA* ptr)
+{
+	deleteSegment(ptr);
+	return 0;
+};*/
 
 
 
@@ -134,13 +172,14 @@ _init(int n, int szPage) {
 	ram.segment_amount = 0;
 	ram.free_memory = ram.total_memory;
 	ram.Blocks = (Block*) calloc(ram.total_memory);
-	//ram.Segment_list = create();
 	for (int index = 0; index < ram.total_memory; index++) {
 		ram.Blocks[index] =(Block) { 0,0,-1 };
 	}
 		_malloc('a',5);
 		memory_status();
-		deleteSegment(1);
+		_malloc('a', 6);
+		memory_status();
+	    _free(1); // дл€ нормальной работы _free нужно написать _read и _write
 		memory_status();
 	return 0;
 };
@@ -150,14 +189,15 @@ int addSegment(int seg_start, int seg_end, int seg_id)
 	// новый сегмент
 	Segment newSegment = { seg_start, seg_end, seg_id };
 	Segment* newSegmentList;
-	//резервируем пам€ть под увеличенный список сегментов
-	newSegmentList = (Segment*) calloc(ram.segment_amount);
+		//резервируем пам€ть под увеличенный список сегментов
+		newSegmentList = (Segment*)calloc(ram.segment_amount+1);
 	//переносим сегменты из старого списка в новый
 	for (int index = 0; index < ram.segment_amount; index++) {
 		newSegmentList[index]=ram.segments[index];
 	}
 	// добавл€ем новый
 	newSegmentList[ram.segment_amount - 1] = newSegment;
+	// устанавливаем принадлежность блоков к сегменту
 	for (int index = seg_start; index <seg_end; index++) {
 		ram.Blocks[index].segment_id = newSegment.segment_id;
 	}
@@ -187,10 +227,11 @@ int deleteSegment(int segment_id)
 		 newList = ram.segments;
 	}
 	else {
-		 newList = (Segment*)calloc(ram.segment_amount);
+		 newList = (Segment*)calloc(ram.segment_amount-1);
 	}
 	//в него войдут все сегменты, кроме того, что имеет нужный id
 	for (int index = 0; index < ram.segment_amount; index++) {
+		ram.Blocks[index].segment_id = -1;
 		if (ram.segments[index].segment_id != segment_id) {
 			newList[index] = ram.segments[index];
 		}
@@ -233,101 +274,49 @@ int memory_status() {
 	printf("\n");
 }
 
+int findSegmentID() {
+	int isExists = 0; // дл€ контрол€ прохождени€ цикла, означает существование текущего id среди сегментов 0-false , 1 -true
+	for (int currentID = 0; ; currentID++) {
+		isExists = 0;
+		for (int index = 0; index < ram.segment_amount; index++) {
+			if (currentID == ram.segments[index].segment_id) {
+				isExists = 1;
+				break;
+			}
+		}
+		if (isExists == 0) {
+			return currentID;
+		}
+	}
+}
+
+ SegmentLine findSpace(size_t size) {
+    SegmentLine spaceForSegment;
+	int isBlockLineFree = 1;
+	for (int startIndex = 0; startIndex + size < ram.total_memory; startIndex++) {
+		spaceForSegment.id_begining = startIndex;
+		spaceForSegment.id_end = startIndex + size;
+		isBlockLineFree = 1;
+		for (int currentBlockIndex = startIndex; currentBlockIndex < spaceForSegment.id_end; currentBlockIndex++) {
+			if (ram.Blocks[currentBlockIndex].free == 0 || ram.Blocks[currentBlockIndex].segment_id > -1) {
+				isBlockLineFree = 0;
+				break;
+			}
+		}
+		if (isBlockLineFree == 1) {
+			return spaceForSegment;
+		}
+	}
+	spaceForSegment.id_begining = -1;
+	spaceForSegment.id_end = -1;
+	return spaceForSegment;
+}
+
+
+
+
 //Ѕуфер - это сами данные!!! 
 // аждый возов malloc - это новый сегмент.  аждый вызов free - это удаление сегмента. 
 // аждый сегмент - это набор блоков, каждый из которых состоит из 1 байта. char* VA это ссылка, котора€ преобразуетс€ в long и используетс€  только как числовое обозначение.
 //ѕам€ть по умолчанию разделена на €чейки по 1 байту.  аждый адрес уникален и €вл€етс€ числом. 
 //ѕри вызове write мы переводим char-->int--> бинарный код, затем подыскиваем последовательность блоков в 4 байта (свободных) и записываем туда. read должен выводить содержимое сегмента. 
-
-
-/*
-#include<stdio.h>
-#include<stdbool.h>
-
-typedef struct __s_block {
-	struct __s_block *next;
-	bool isfree;
-	size_t size;
-	void *memoryAddress;
-}_SBLOCK;
-
-#define BLOCK_SIZE sizeof(_SBLOCK)
-
-_SBLOCK *allocateMemBlock(size_t size)
-{
-	_SBLOCK *block = (_SBLOCK*)sbrk(0);
-	void *memadr = (void*)sbrk(0);
-	void *allocate_mem = (void*)sbrk(BLOCK_SIZE + size);
-
-	if (allocate_mem == (void*)-1) {
-		return NULL;
-	}
-	else {
-		block->next = NULL;
-		block->isfree = false;
-		block->size = size;
-		block->memoryAddress = memadr + BLOCK_SIZE;
-		return block;
-	}
-}
-
-//allocate next memory block
-void allocateNextMemBlock(size_t size, _SBLOCK **head)
-{
-	_SBLOCK *current = *head;
-	void *allocate_mem = NULL;
-	void *memadr = (void*)sbrk(0);
-
-	if (current == NULL) {
-		*head = allocateMemBlock(size);
-	}
-	else {
-		while (current->next != NULL) {
-			current = current->next;
-		}
-		_SBLOCK *newblock = sbrk(0);
-
-		allocate_mem = (void*)sbrk(BLOCK_SIZE + size);
-		if (allocate_mem == (void*)-1) {}
-		else {
-			newblock->next = NULL;
-			newblock->isfree = false;
-			newblock->size = size;
-			newblock->memoryAddress = memadr + BLOCK_SIZE;
-			current->next = newblock;
-		}
-	}
-}
-
-void freeMemBlock(_SBLOCK **head)
-{
-	if (*head == NULL) {}
-	else {
-		(*head)->isfree = true;
-	}
-}
-
-void printMemBlocks(_SBLOCK *current)
-{
-	while (current != NULL) {
-		printf("isfree = %d, size = %d, memoryAddress = %p, current = %p, next-node = %p\n",
-			current->isfree, current->size, current->memoryAddress, current, current->next);
-		current = current->next;
-	}
-}
-
-int main()
-{
-	_SBLOCK *sMemBlock = NULL;
-	allocateNextMemBlock(10, &sMemBlock);
-	allocateNextMemBlock(35, &sMemBlock);
-	allocateNextMemBlock(62, &sMemBlock);
-	printMemBlocks(sMemBlock);
-
-	printf("\nAfter freeing second node\n");
-	freeMemBlock(&(sMemBlock->next));
-	printMemBlocks(sMemBlock);
-
-	return 0;
-}
-*/
