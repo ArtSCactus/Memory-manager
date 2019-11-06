@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+      <FILENAME>Memory_manager.c</FILENAME>
+      <LINE>64</LINE>
+      <COLUMN>83</COLUMN>
+    </SFA>
+    <DEFECTCODE>6281</DEFECTCODE>
+    <DESCRIPTION>Неверный порядок операций:  операторы отношений имеют более высокий приоритет, чем битовые операторы.</DESCRIPTION>
+    <FUNCTION>_malloc</FUNCTION>
+    <DECORATED>_malloc</DECORATED>
+    <FUNCLINE>44</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+      <FILENAME>Memory_manager.c</FILENAME>
+      <LINE>64</LINE>
+      <COLUMN>34</COLUMN>
+    </SFA>
+    <DEFECTCODE>6281</DEFECTCODE>
+    <DESCRIPTION>Неверный порядок операций:  операторы отношений имеют более высокий приоритет, чем битовые операторы.</DESCRIPTION>
+    <FUNCTION>_malloc</FUNCTION>
+    <DECORATED>_malloc</DECORATED>
+    <FUNCLINE>44</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+      <FILENAME>Memory_manager.c</FILENAME>
+      <LINE>70</LINE>
+      <COLUMN>64</COLUMN>
+    </SFA>
+    <DEFECTCODE>6281</DEFECTCODE>
+    <DESCRIPTION>Неверный порядок операций:  операторы отношений имеют более высокий приоритет, чем битовые операторы.</DESCRIPTION>
+    <FUNCTION>_malloc</FUNCTION>
+    <DECORATED>_malloc</DECORATED>
+    <FUNCLINE>44</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+      <FILENAME>Memory_manager.c</FILENAME>
+      <LINE>70</LINE>
+      <COLUMN>33</COLUMN>
+    </SFA>
+    <DEFECTCODE>6281</DEFECTCODE>
+    <DESCRIPTION>Неверный порядок операций:  операторы отношений имеют более высокий приоритет, чем битовые операторы.</DESCRIPTION>
+    <FUNCTION>_malloc</FUNCTION>
+    <DECORATED>_malloc</DECORATED>
+    <FUNCLINE>44</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+      <FILENAME>Memory_manager.c</FILENAME>
+      <LINE>70</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>6001</DEFECTCODE>
+    <DESCRIPTION>Использование неинициализированной памяти "spaceForSegment".</DESCRIPTION>
+    <FUNCTION>_malloc</FUNCTION>
+    <DECORATED>_malloc</DECORATED>
+    <FUNCLINE>44</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>3</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>46</LINE>
+        <COLUMN>21</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>47</LINE>
+        <COLUMN>13</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>48</LINE>
+        <COLUMN>17</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>49</LINE>
+        <COLUMN>13</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>объявление</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>Инициализация "spaceForSegment" не выполнена</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>50</LINE>
+        <COLUMN>5</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>51</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>51</LINE>
+        <COLUMN>53</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>ветвь</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Пропустить этот цикл (предполагается, что "&lt;условие ветви&gt;" равно false)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>70</LINE>
+        <COLUMN>39</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>70</LINE>
+        <COLUMN>5</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>использование</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>"spaceForSegment" используется, но, возможно, не инициализировано</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+      <FILENAME>Memory_manager.c</FILENAME>
+      <LINE>211</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>6001</DEFECTCODE>
+    <DESCRIPTION>Использование неинициализированной памяти "currentSegment".</DESCRIPTION>
+    <FUNCTION>deleteSegment</FUNCTION>
+    <DECORATED>deleteSegment</DECORATED>
+    <FUNCLINE>202</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>3</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>204</LINE>
+        <COLUMN>9</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>объявление</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>Инициализация "currentSegment" не выполнена</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>205</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>205</LINE>
+        <COLUMN>27</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>ветвь</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Пропустить этот цикл (предполагается, что "index&lt;ram.segment_amount" равно false)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>211</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+        <FILENAME>Memory_manager.c</FILENAME>
+        <LINE>211</LINE>
+        <COLUMN>18</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>использование</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>"currentSegment" используется, но, возможно, не инициализировано</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Projects\Memory-manager\Memory manager\Memory manager\</FILEPATH>
+      <FILENAME>Memory_manager.c</FILENAME>
+      <LINE>266</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>6273</DEFECTCODE>
+    <DESCRIPTION>В качестве параметра _Param_(5) передано нецелочисленное значение, хотя при вызове "printf" требуется целочисленное значение; фактический тип: "char *"; если передается значение указателя, следует использовать %p.</DESCRIPTION>
+    <FUNCTION>memory_status</FUNCTION>
+    <DECORATED>memory_status</DECORATED>
+    <FUNCLINE>263</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
