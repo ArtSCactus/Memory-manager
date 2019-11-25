@@ -23,6 +23,7 @@ typedef struct RAM {
 	int free_memory;
 	Byte* Blocks;
 	Segment* segments;
+	Segment last_requested_segment;
 	int segment_amount;
 }RAM;
 
@@ -44,13 +45,13 @@ RAM ram;
 _malloc(VA* ptr, size_t szBlock)
 {
 	if (ram.free_memory < szBlock) return -2;
-	if (szBlock <= 0 ) return -1;
+	if (szBlock <= 0) return -1;
 	ram.free_memory -= szBlock;
 	SegmentLine spaceForSegment;
 	int isBlockLineFree = 1;
-	for (int startIndex = 0; startIndex + (int) szBlock < ram.total_memory; startIndex++) {
+	for (int startIndex = 0; startIndex + (int)szBlock < ram.total_memory; startIndex++) {
 		spaceForSegment.id_begining = startIndex;
-		spaceForSegment.id_end = (startIndex + szBlock)-1;
+		spaceForSegment.id_end = (startIndex + szBlock) - 1;
 		isBlockLineFree = 1;
 		for (int currentBlockIndex = startIndex; currentBlockIndex <= spaceForSegment.id_end; currentBlockIndex++) {
 			if (ram.Blocks[currentBlockIndex].free == 0 || ram.Blocks[currentBlockIndex].segment_id != -1) {
@@ -68,7 +69,7 @@ _malloc(VA* ptr, size_t szBlock)
 	if (spaceForSegment.id_begining == -1 & spaceForSegment.id_end == -1) {
 		return -2;
 	}
-	return addSegment(ptr,spaceForSegment.id_begining, spaceForSegment.id_end, findSegmentID());
+	return addSegment(ptr, spaceForSegment.id_begining, spaceForSegment.id_end, findSegmentID());
 };
 
 
@@ -84,7 +85,7 @@ _malloc(VA* ptr, size_t szBlock)
 @retval	-1	неверные параметры
 @retval	1	неизвестна€ ошибка
 **/
-_free(VA ptr) 
+_free(VA ptr)
 {
 	deleteSegment(ptr);
 	return 0;
@@ -106,21 +107,33 @@ _free(VA ptr)
 @retval	-2	доступ за пределы блока
 @retval	1	неизвестна€ ошибка
 **/
-_read(VA ptr, void* pBuffer, size_t szBuffer) {
-	Segment allocatedSegment = ram.segments[getSegmentArrayIndex(ram.Blocks[ptr[0]].segment_id)];
+_read(VA ptr, void* *pBuffer, size_t szBuffer) { // добавил * перед pBuffer, т.к. чтобы избежать return, 
+	//нам необходимо работать именно с адресом, а не с локальной переменной. ¬ случае, если мы работаем с локальной переменной, без возврата (retun pBuffer) не обойтись,
+	// т.к. мы не можем изменить переменную, переданную как параметр в функцию.
+	Segment allocatedSegment;
+	if (ram.last_requested_segment.id_begining == ptr[0] & ram.last_requested_segment.id_end == ptr[1]) {
+		allocatedSegment = ram.last_requested_segment;
+	}
+	else {
+		allocatedSegment = ram.segments[getSegmentArrayIndex(ram.Blocks[ptr[0]].segment_id)];
+	}
+	ram.last_requested_segment = allocatedSegment;
 	/*if (allocatedSegment.id_begining + szBuffer > allocatedSegment.id_end) {
 		return -2;
 	}*/
 	int size = (int)szBuffer;
 	char* temp = (char*) malloc((int)szBuffer);
+
 	int tempArrayIndex = 0;
-	for (int index = allocatedSegment.id_begining; index < (int)allocatedSegment.id_begining+szBuffer; index++, tempArrayIndex++) {
-		temp[tempArrayIndex] =(char) ram.Blocks[index].value;
-		printf("Byte[%i] value: %c\n",index, ram.Blocks[index].value);
+	printf("READ DEBUG: \n");
+	for (int index = allocatedSegment.id_begining; index < (int)allocatedSegment.id_begining + szBuffer; index++, tempArrayIndex++) {
+		temp[tempArrayIndex] = (char) ram.Blocks[index].value;
+		printf("Byte[%i] value: %c\n", index, ram.Blocks[index].value);
 	}
-	pBuffer = temp;
-	return pBuffer;
-	//return 0;
+	*pBuffer = temp;
+	//return pBuffer;
+	char* buffer = (char*) *pBuffer;
+	return 0;
 };
 
 
@@ -144,14 +157,14 @@ _write(VA ptr, void* pBuffer, size_t szBuffer) {
 	/*if (allocatedSegment.id_begining + szBuffer > allocatedSegment.id_end) {
 		return -2;
 	}*/
-	char* temp = (char*) pBuffer;
+	char* temp = (char*)pBuffer;
 	printf("WRITE DEBUG:\n");
 	int bufferIndex = 0;
-	for (int index = allocatedSegment.id_begining; index < allocatedSegment.id_begining+(int)szBuffer; index++, bufferIndex++) {
+	for (int index = allocatedSegment.id_begining; index < allocatedSegment.id_begining + (int)szBuffer; index++, bufferIndex++) {
 		ram.Blocks[index].free = 0;
 		ram.Blocks[index].value = temp[bufferIndex];//&pBuffer;
-		printf("\nszBuffer: int:%i\n",szBuffer);
-		printf("Byte[%i] value: %c   Segment{id=%i, id_beg=%i, id_end=%i, id_beg+szBuffer=%i}\n",index, temp[bufferIndex], allocatedSegment.segment_id,allocatedSegment.id_begining, (int)(allocatedSegment.id_begining+szBuffer));
+		printf("\nszBuffer: int:%i\n", szBuffer);
+		printf("Byte[%i] value: %c   Segment{id=%i, id_beg=%i, id_end=%i, id_beg+szBuffer=%i}\n", index, temp[bufferIndex], allocatedSegment.segment_id, allocatedSegment.id_begining, (int)(allocatedSegment.id_begining + szBuffer));
 	}
 	printf("\n");
 	return 0;
@@ -182,46 +195,6 @@ _init(int n, int szPage) {
 	for (int index = 0; index < ram.total_memory; index++) {
 		ram.Blocks[index] = (Byte){ 0,1,-1 };
 	}
-	memory_status();
-	printf("\nAllocating ptr on 4 bytes\n");
-	VA ptr = _malloc(&ptr, 4);
-	memory_status();
-	printf("\nAllocating ptr2 on 2 bytes\n");
-	VA ptr2 = _malloc(&ptr2, 2);
-	memory_status();
-	printf("\nAllocating ptr3 on 10 bytes\n");
-	VA ptr3 = _malloc(&ptr3, 10);
-	memory_status();
-	printf("\nWriting in ptr on 4 bytes\n");
-	_write(ptr, "test", 4);
-	printf("\nReading ptr:\n");
-	void* Buf = (void*) calloc(7);
-		Buf=_read(ptr, Buf, 5);
-		char* charBuff = (char*)Buf;
-	printf("\n--------READING IN BUFFER TEST---------\n");
-	printf("Value: ");
-	for (int index = 0; index < 5; index++)
-		printf("%c",charBuff[index]);
-	printf("\n-------------------------\n");
-
-	memory_status();
-	printf("\nWriting in ptr2 on 2 bytes\n");
-	_write(ptr2, "ko", 2);
-		memory_status();
-		printf("\nWriting in ptr3 on 10 bytes\n");
-		_write(ptr3, "new_test", 8);
-		memory_status();
-		printf("\nClearing ptr3\n");
-		_free(ptr3);
-		memory_status();
-		/*_malloc(NULL, 1);
-		memory_status();
-		_malloc(NULL, 1);
-		memory_status();
-	    _free(1); 
-		memory_status();
-		_malloc(NULL, 3);
-		memory_status();*/
 	return 0;
 };
 
@@ -229,14 +202,15 @@ addSegment(VA* ptr, int seg_start, int seg_end, int seg_id)
 {
 	ptr = (VA*)calloc(2);
 	// новый сегмент
-	Segment newSegment = { seg_start, seg_end-1, seg_id };
+	Segment newSegment = { seg_start, seg_end - 1, seg_id };
 	Segment* newSegmentList;
-		//резервируем пам€ть под увеличенный список сегментов
-		newSegmentList = (Segment*) calloc(ram.segment_amount+1);
+
+	//резервируем пам€ть под увеличенный список сегментов
+	newSegmentList = (Segment*)calloc(ram.segment_amount + 1);
 
 	//переносим сегменты из старого списка в новый
 	for (int index = 0; index < ram.segment_amount; index++) {
-		newSegmentList[index]=ram.segments[index];
+		newSegmentList[index] = ram.segments[index];
 	}
 	// добавл€ем новый
 	newSegmentList[ram.segment_amount - 1] = newSegment;
@@ -247,10 +221,10 @@ addSegment(VA* ptr, int seg_start, int seg_end, int seg_id)
 	}
 	//обновл€ем список
 	ram.segments = newSegmentList;
-	ram.segment_amount+=1;
-	ptr[0] = (int) newSegment.id_begining;// (49*(newSegment.id_end - newSegment.id_begining))*ram.total_memory;
-	ptr[1] = (int) newSegment.id_end;
-	return ptr;
+	ram.segment_amount += 1;
+	ptr[0] = (int)newSegment.id_begining;// (49*(newSegment.id_end - newSegment.id_begining))*ram.total_memory;
+	ptr[1] = (int)newSegment.id_end;
+	return 0;
 }
 
 int deleteSegment(VA ptr)
@@ -262,20 +236,20 @@ int deleteSegment(VA ptr)
 		}
 	}
 
-	for (int index = currentSegment.id_begining; index <= currentSegment.id_end+1; index++) {
-	ram.Blocks[index].segment_id = -1;
-	ram.Blocks[index].free = 1;
-	ram.Blocks[index].value = NULL;
+	for (int index = currentSegment.id_begining; index <= currentSegment.id_end + 1; index++) {
+		ram.Blocks[index].segment_id = -1;
+		ram.Blocks[index].free = 1;
+		ram.Blocks[index].value = NULL;
 	}
 
 	int memoryCounter = currentSegment.id_end - currentSegment.id_begining;
 	//формируем новый список сегментов
 	Segment* newList;
 	if (ram.segment_amount == 1) {
-		 newList = ram.segments;
+		newList = ram.segments;
 	}
 	else {
-		 newList = (Segment*)calloc(ram.segment_amount-1);
+		newList = (Segment*)calloc(ram.segment_amount - 1);
 	}
 	//в него войдут все сегменты, кроме того, что имеет нужный id
 	for (int index = 0; index < ram.segment_amount; index++) {
@@ -317,7 +291,7 @@ Segment getSegment(int segment_id)
 int memory_status() {
 	printf("Total memory{%i}, Free memory{%i}\n", ram.total_memory, ram.free_memory);
 	for (int index = 0; index < ram.total_memory; index++) {
-		printf("Byte[%i] seg_id:%i status:%i value:%i\n",index,ram.Blocks[index].segment_id, ram.Blocks[index].free, ram.Blocks[index].value);
+		printf("Byte[%i] seg_id:%i status:%i value:%i\n", index, ram.Blocks[index].segment_id, ram.Blocks[index].free, ram.Blocks[index].value);
 	}
 	printf("\n");
 }
@@ -347,8 +321,8 @@ int getSegmentArrayIndex(int ID) {
 	return -1;
 }
 
- SegmentLine findSpace(size_t size) {
-    SegmentLine spaceForSegment;
+SegmentLine findSpace(size_t size) {
+	SegmentLine spaceForSegment;
 	int isBlockLineFree = 1;
 	for (int startIndex = 0; startIndex + size < ram.total_memory; startIndex++) {
 		spaceForSegment.id_begining = startIndex;
