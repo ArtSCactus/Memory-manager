@@ -4,23 +4,17 @@ D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(65,107
 D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(69,70): warning C4554: "&": проверьте приоритет операторов на ошибки; для уточнения приоритета используйте скобки
 D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(72,19): warning C4013: addSegment: нет определения; предполагается "extern" с возвратом типа "int"
 D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(72,91): warning C4013: findSegmentID: нет определения; предполагается "extern" с возвратом типа "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(90,15): warning C4013: deleteSegment: нет определения; предполагается "extern" с возвратом типа "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(114,100): warning C4554: "&": проверьте приоритет операторов на ошибки; для уточнения приоритета используйте скобки
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(118,55): warning C4013: getSegmentArrayIndex: нет определения; предполагается "extern" с возвратом типа "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(125,29): warning C4013: malloc: нет определения; предполагается "extern" с возвратом типа "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(129,55): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(131,10): warning C4477: "printf": в строке форматирования "%c" требуется аргумент типа "int", но вариативный аргумент "2" имеет тип "VA *"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(165,46): warning C4047: =: "VA *" отличается по уровням косвенного обращения от "char"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(167,10): warning C4473: "printf": передано недостаточно аргументов для строки формата
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(167,10): message : заполнители и их параметры ожидают переменное число аргументов в количестве 6, но было предоставлено 5
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(167,10): message : отсутствующий вариативный аргумент "6" требуется для строки форматирования "%i"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(194,28): warning C4013: calloc: нет определения; предполагается "extern" с возвратом типа "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(225,38): warning C4047: =: "VA" отличается по уровням косвенного обращения от "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(226,33): warning C4047: =: "VA" отличается по уровням косвенного обращения от "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(271,6): warning C4013: free: нет определения; предполагается "extern" с возвратом типа "int"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(294,10): warning C4477: "printf": в строке форматирования "%i" требуется аргумент типа "int", но вариативный аргумент "4" имеет тип "VA *"
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(327,45): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(267): warning C4716: deleteSegment: должна возвращать значение
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(289): warning C4715: getSegment: значение возвращается не при всех путях выполнения
-D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(297): warning C4716: memory_status: должна возвращать значение
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(99,15): warning C4013: deleteSegment: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(100,6): warning C4013: free: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(145,55): warning C4013: getSegmentArrayIndex: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(158,29): warning C4013: malloc: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(169,8): warning C4013: memcpy: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(207,52): warning C4018: >: несоответствие типов со знаком и без знака
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(215,46): warning C4047: =: "void *" отличается по уровням косвенного обращения от "char"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(243,29): warning C4013: calloc: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(342,10): warning C4477: "printf": в строке форматирования "%i" требуется аргумент типа "int", но вариативный аргумент "4" имеет тип "void *"
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(375,45): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(315): warning C4716: deleteSegment: должна возвращать значение
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(337): warning C4715: getSegment: значение возвращается не при всех путях выполнения
+D:\Projects\Memory-manager\Memory manager\Memory manager\Memory_manager.c(345): warning C4716: memory_status: должна возвращать значение
   Memory manager.vcxproj -> D:\Projects\Memory-manager\Memory manager\Debug\Memory manager.exe
